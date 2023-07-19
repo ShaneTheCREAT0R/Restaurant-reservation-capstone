@@ -2,3 +2,11 @@
   background-color: #393a44;
   min-width: 200px;
 }
+
+.form-group {
+  color: black;
+}
+
+.form-control {
+  color: rgb(255, 102, 0);
+}

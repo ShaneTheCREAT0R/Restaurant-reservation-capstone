@@ -52,6 +52,24 @@ async function fetchJson(url, options, onCancel) {
   }
 }
 
+
+/**
+ * Creates a new reservation
+ * @returns {Promise<[reservation]>}
+ *  a promise that resolves to the newly created reservation.
+ */
+ export async function createReservation(reservation, signal) {
+  const url = `${API_BASE_URL}/reservations`;
+  const options = {
+    method: "POST",
+    headers,
+    body: JSON.stringify({ data: reservation }),
+    signal,
+  };
+  return await fetchJson(url, options, reservation);
+}
+
+
 /**
  * Retrieves all existing reservation.
  * @returns {Promise<[reservation]>}
