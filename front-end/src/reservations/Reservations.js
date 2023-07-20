@@ -27,9 +27,9 @@ export default function Reservations() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         await createReservation(formData)
-        history.push(`/dashboard?date=${formData.reservation_date}`)
+        history.push(`/dashboard`)
     }
-
+//history.push(`/dashboard?date=${formData.reservation_date}`)
     return (
     <Form 
     initialformData={formData}
