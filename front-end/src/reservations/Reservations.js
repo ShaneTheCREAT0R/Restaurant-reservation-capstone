@@ -1,11 +1,15 @@
 import React, {useState} from 'react';
 import { useHistory } from 'react-router';
 import { createReservation } from '../utils/api';
+import { isNotOnTuesday } from '../utils/date-time';
+import { isInTheFuture } from '../utils/date-time';
+import ErrorAlert from '../layout/ErrorAlert';
 import Form from './Form';
 
 
 export default function Reservations() {
   const history = useHistory();
+  const [reservationsError, setReservationsError] = useState(null);
   const initialFormData = {
     first_name: "",
     last_name: "",
@@ -23,18 +27,40 @@ export default function Reservations() {
             [e.target.name]: e.target.value,
           });
     }
+
+    const findErrors = (date, errors) => {
+      isNotOnTuesday(date, errors);
+      isInTheFuture(date, errors);
+    };
   
     const handleSubmit = async (e) => {
         e.preventDefault();
-        await createReservation(formData)
-        history.push(`/dashboard`)
+        const controller = new AbortController();
+        const errors = [];
+        findErrors(formData.reservation_date, errors);
+        if (errors.length){
+          setReservationsError({ message: errors });
+          return;
+        } 
+        try {
+          formData.people = Number(formData.people);
+          await createReservation(formData, controller.signal);
+          const date = formData.reservation_date;
+          history.push(`/dashboard?date=${date}`);
+        } catch (error){
+          setReservationsError(error)
+        }
+        return () => controller.abort();
     }
-//history.push(`/dashboard?date=${formData.reservation_date}`)
+
     return (
-    <Form 
-    initialformData={formData}
-    handleFormChange={handleFormChange}
-    handleSubmit={handleSubmit}
-    />
+      <>
+        <ErrorAlert error={reservationsError} />
+        <Form 
+        initialformData={formData}
+        handleFormChange={handleFormChange}
+        handleSubmit={handleSubmit}
+        />
+      </>
   )
 }
