@@ -98,3 +98,14 @@ export function isInTheFuture(reservation_date, errors) {
     errors.push(<li key="past">Reservation must be in the future</li>);
   }
 }
+
+export function isValidTime(reservation_time, errors){
+  const hours = Number(reservation_time.split(":")[0]);
+  const minutes = Number(reservation_time.split(":")[1]);
+  if (hours < 10 || (hours === 10 && minutes < 30)){
+    errors.push(<li key="past">Reservation must be after 10:30AM</li>)
+  }
+  if (hours > 9 || (hours === 21 && minutes > 30)){
+    errors.push(<li key="past">Reservation must be before 9:30PM because the restaurant closes at 10:30PM</li>)
+  }
+}

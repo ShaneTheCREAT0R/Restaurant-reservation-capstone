@@ -3,6 +3,7 @@ import { useHistory } from 'react-router';
 import { createReservation } from '../utils/api';
 import { isNotOnTuesday } from '../utils/date-time';
 import { isInTheFuture } from '../utils/date-time';
+import { isValidTime } from '../utils/date-time';
 import ErrorAlert from '../layout/ErrorAlert';
 import Form from './Form';
 
@@ -28,16 +29,17 @@ export default function Reservations() {
           });
     }
 
-    const findErrors = (date, errors) => {
+    const findErrors = (date, time, errors) => {
       isNotOnTuesday(date, errors);
       isInTheFuture(date, errors);
+      isValidTime(time, errors);
     };
   
     const handleSubmit = async (e) => {
         e.preventDefault();
         const controller = new AbortController();
         const errors = [];
-        findErrors(formData.reservation_date, errors);
+        findErrors(formData.reservation_date, formData.reservation_time, errors);
         if (errors.length){
           setReservationsError({ message: errors });
           return;
@@ -48,7 +50,7 @@ export default function Reservations() {
           const date = formData.reservation_date;
           history.push(`/dashboard?date=${date}`);
         } catch (error){
-          setReservationsError(error)
+          setReservationsError([error])
         }
         return () => controller.abort();
     }

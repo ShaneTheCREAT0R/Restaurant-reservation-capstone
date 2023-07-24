@@ -1,10 +1,28 @@
 /**
  * List handler for reservation resources
  */
-
  const reservationsService = require("./reservations.service.js");
  const errorHandler = require("../errors/errorHandler");
  const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
+
+
+ const validReservationsField = [
+  "first_name",
+  "last_name",
+  "mobile_number",
+  "reservation_date",
+  "reservation_time",
+  "people",
+];
+
+
+function isValidReservation(req, res, next){
+   const reservation = req.body.data;
+   if(!reservation){
+    return next({ status: 400, message: `Must have data property.` });
+   }
+   
+}
 
 async function list(req, res) {
   const data = await reservationsService.list();
@@ -22,5 +40,5 @@ async function create(req, res) {
 
 module.exports = {
   list: asyncErrorBoundary(list),
-  create: asyncErrorBoundary(create),
+  create: [isValidReservation, asyncErrorBoundary(create)],
 };
