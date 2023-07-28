@@ -42,7 +42,7 @@ function Dashboard({ date }) {
     history.push(`/dashboard?date=${next(date)}`)
   }
 
-
+  console.log(reservations)
 
   return (
     <main>

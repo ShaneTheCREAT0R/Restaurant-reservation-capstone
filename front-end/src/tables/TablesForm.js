@@ -19,7 +19,7 @@ export default function TablesForm({
     <form onSubmit={handleSubmit} className="form-group">
         <fieldset>
             <legend>
-                Tables
+                Create a Table
             </legend>
             <div>
                 <input 
