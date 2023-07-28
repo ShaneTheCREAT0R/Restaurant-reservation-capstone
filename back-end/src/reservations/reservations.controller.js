@@ -2,7 +2,6 @@
  * List handler for reservation resources
  */
  const reservationsService = require("./reservations.service.js");
- const errorHandler = require("../errors/errorHandler");
  const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 
 
@@ -20,8 +19,37 @@ function isValidReservation(req, res, next){
    const reservation = req.body.data;
    if(!reservation){
     return next({ status: 400, message: `Must have data property.` });
-   }
-   
+   } next()
+}
+
+function isValidTimeAndDate(req, res, next){
+  const reservation = req.body.data;
+  const date = reservation.reservation_date;
+  const time = reservation.reservation_time;
+  // validation to check if reservation is on a Tuesday 
+  const day = new Date(date).getUTCDay();
+  if (day === 2) {
+    return next({ status: 400, message: "Reservation cannot be on a Tuesday."})
+  }
+
+  // Validation to check if reservation is in the past 
+  const formattedDate = new Date(`${date}T${time}`);
+  if (formattedDate <= new Date()) {
+    return next({status: 400, message: "Reservation must be in the future"});
+  }
+
+  console.log(time)
+  // Validation to check if time is before 10:30am or after 9:30PM
+  const hours = Number(time.split(":")[0]);
+  const minutes = Number(time.split(":")[1]);
+  if (hours < 10 || (hours === 10 && minutes < 30)) {
+    return next({status: 400, message: "Reservation must be after 10:30am"});
+  }
+  if (hours > 21 || (hours === 21 && minutes > 30)) {
+    return next({status: 400, message: "Reservation must be before 9:30pm"});
+  }
+
+  next()
 }
 
 async function list(req, res) {
@@ -40,5 +68,5 @@ async function create(req, res) {
 
 module.exports = {
   list: asyncErrorBoundary(list),
-  create: [isValidReservation, asyncErrorBoundary(create)],
+  create: [isValidReservation, isValidTimeAndDate, asyncErrorBoundary(create)],
 };
