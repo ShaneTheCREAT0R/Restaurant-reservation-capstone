@@ -9,7 +9,7 @@ export default function Tables() {
     const [tablesError, setTablesError] = useState(null);
     const initialFormData = {
       table_name: "",
-      table_capacity: "",
+      capacity: 0,
     };
   
     const [formData, setFormData] = useState({ ...initialFormData });
@@ -26,7 +26,7 @@ export default function Tables() {
         e.preventDefault();
         const controller = new AbortController();
         try {
-          formData.table_capacity = Number(formData.table_capacity);
+          formData.capacity = Number(formData.capacity);
           const response = await createTable(formData, controller.signal);
           if (response){
             history.push("/dashboard");

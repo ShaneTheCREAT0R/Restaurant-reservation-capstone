@@ -37,11 +37,11 @@ export default function TablesForm({
             <div>
                 <input 
                 type="number"
-                name="table_capacity"
+                name="capacity"
                 className="form-control"
                 id="people"
-                placeholder={initialformData?.table_capacity || "Table Capacity"}
-                value={initialformData?.table_capacity}
+                placeholder={initialformData?.capacity || "Table Capacity"}
+                value={initialformData?.capacity}
                 onChange={handleFormChange}
                 required
                 min="1"
