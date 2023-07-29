@@ -8,8 +8,8 @@ import useQuery from "../utils/useQuery";
 import Reservations from "../reservations/Reservations";
 import Tables from "../tables/Tables";
 import Seat from "../seat/Seat";
-// import Search from "../search/Search";
-// import Edit from "../reservations/Edit";
+import Search from "../search/Search";
+import Edit from "../reservations/Edit";
 
 /**
  * Defines all the routes for the application.
@@ -29,9 +29,9 @@ function Routes() {
       <Route exact path="/reservations/:reservation_id/seat">
         <Seat />
       </Route>
-      {/* <Route exact path="/reservations/:reservation_id/edit">
+      <Route exact path="/reservations/:reservation_id/edit">
         <Edit />
-      </Route> */}
+      </Route>
       <Route exact path="/reservations/new">
         <Reservations />
       </Route>
@@ -44,9 +44,9 @@ function Routes() {
       <Route path="/tables/new">
         <Tables />
       </Route>
-      {/* <Route path="/search">
+      <Route path="/search">
         <Search />
-      </Route> */}
+      </Route>
       <Route>
         <NotFound />
       </Route>

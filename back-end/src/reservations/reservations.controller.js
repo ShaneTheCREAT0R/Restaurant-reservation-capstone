@@ -5,7 +5,7 @@
  const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 
 
- const validReservationsField = [
+ const VALID_RESERVATION_FIELDS = [
   "first_name",
   "last_name",
   "mobile_number",
@@ -19,7 +19,29 @@ function isValidReservation(req, res, next){
    const reservation = req.body.data;
    if(!reservation){
     return next({ status: 400, message: `Must have data property.` });
-   } next()
+   } 
+   VALID_RESERVATION_FIELDS.forEach((field) => {
+    if (!reservation[field]) {
+      return next({ status: 400, message: `${field} field required` });
+    }
+
+    if (field === "people" && typeof reservation[field] !== "number") {
+      return next({
+        status: 400,
+        message: `${reservation[field]} is not a number type for people field.`,
+      });
+    }
+
+    if (field === "reservation_date" && !Date.parse(reservation[field])) {
+      return next({ status: 400, message: `${field} is not a valid date.` });
+    }
+
+    if (field === "reservation_time" && !reservation[field]) {
+        return next({ status: 400, message: `${field} is not a valid time` });
+    }
+  });
+  next();
+
 }
 
 function isValidTimeAndDate(req, res, next){
@@ -38,7 +60,6 @@ function isValidTimeAndDate(req, res, next){
     return next({status: 400, message: "Reservation must be in the future"});
   }
 
-  console.log(time)
   // Validation to check if time is before 10:30am or after 9:30PM
   const hours = Number(time.split(":")[0]);
   const minutes = Number(time.split(":")[1]);
@@ -87,7 +108,7 @@ function isAlreadyFinished(req, res, next) {
 
 const reservationExists = async (req, res, next) => {
   const { reservation_Id } = req.params;
-  const reservation = await service.read(reservation_Id);
+  const reservation = await reservationsService.read(reservation_Id);
 
   if (reservation) {
     res.locals.reservation = reservation;
@@ -125,7 +146,7 @@ async function create(req, res) {
 }
 
 async function read(req, res) {
-  const reservation = req.locals.reservation;
+  const reservation = res.locals.reservation;
   res.json({data: reservation});
 
 }
@@ -133,14 +154,14 @@ async function read(req, res) {
 async function update(req, res, next) {
   const { reservation_Id } = req.params;
   const { status } = req.body.data;
-  const reservation = await service.update(reservation_Id, status);
+  const reservation = await reservationsService.update(reservation_Id, status);
   res.json({ data: reservation });
 }
 
 async function modify(req, res, next) {
   const { reservation_Id } = req.params;
   const reservation = req.body.data;
-  const data = await service.modify(reservation_Id, reservation);
+  const data = await reservationsService.modify(reservation_Id, reservation);
   reservation.reservation_id = data.reservation_id;
   res.json({ data: reservation });
 }
@@ -148,8 +169,9 @@ async function modify(req, res, next) {
 module.exports = {
   list: asyncErrorBoundary(list),
   create: [
-    isValidReservation, 
-    isValidTimeAndDate, 
+    asyncErrorBoundary(isValidReservation),
+    isValidTimeAndDate,
+    hasBookedStatus,
     asyncErrorBoundary(create),
   ],
   read: [asyncErrorBoundary(reservationExists), asyncErrorBoundary(read)],
