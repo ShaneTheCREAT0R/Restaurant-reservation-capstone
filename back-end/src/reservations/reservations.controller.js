@@ -15,6 +15,22 @@
 ];
 
 
+//helper function for validation
+function _validateTime(str) {
+  const [hour, minute] = str.split(":");
+
+  if (hour.length > 2 || minute.length > 2) {
+    return false;
+  }
+  if (hour < 1 || hour > 23) {
+    return false;
+  }
+  if (minute < 0 || minute > 59) {
+    return false;
+  }
+  return true;
+}
+
 function isValidReservation(req, res, next){
    const reservation = req.body.data;
    if(!reservation){
@@ -36,8 +52,10 @@ function isValidReservation(req, res, next){
       return next({ status: 400, message: `${field} is not a valid date.` });
     }
 
-    if (field === "reservation_time" && !reservation[field]) {
+    if (field === "reservation_time") {
+      if (!_validateTime(reservation[field])) {
         return next({ status: 400, message: `${field} is not a valid time` });
+      }
     }
   });
   next();
@@ -51,7 +69,7 @@ function isValidTimeAndDate(req, res, next){
   // validation to check if reservation is on a Tuesday 
   const day = new Date(date).getUTCDay();
   if (day === 2) {
-    return next({ status: 400, message: "Reservation cannot be on a Tuesday."})
+    return next({ status: 400, message: "Restaurant is closed on Tuesdays."})
   }
 
   // Validation to check if reservation is in the past 
