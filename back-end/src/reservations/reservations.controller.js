@@ -52,9 +52,19 @@ function isValidTimeAndDate(req, res, next){
   next()
 }
 
+
+//CRUD
 async function list(req, res) {
-  const data = await reservationsService.list();
-  res.json({ data })
+  const { date, mobile_number } = req.query;
+  let reservations;
+  if (mobile_number) {
+    reservations = await reservationsService.search(mobile_number);
+  } else {
+    reservations = date ? await reservationsService.listByDate(date) : await reservationsService.list();
+  }
+  res.json({
+    data: reservations,
+  });
 }
 
 

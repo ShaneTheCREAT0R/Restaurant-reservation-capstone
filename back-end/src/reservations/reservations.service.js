@@ -13,7 +13,17 @@ function create(reservation) {
       .then((newReservation) => newReservation[0]);
   }
 
+  function listByDate(reservation_date) {
+    return knex("reservations")
+      .select("*")
+      .where({ reservation_date })
+      // .whereNotIn("status", ["finished", "cancelled"])
+      .orderBy("reservations.reservation_time");
+  }
+
+
 module.exports = {
   list,
   create,
+  listByDate,
 };
