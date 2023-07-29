@@ -25,7 +25,7 @@ export default function TablesForm({
                 <input 
                 type="text"
                 name="table_name"
-                className="form-control"
+                className="form-control mb-1"
                 id="table_name"
                 placeholder={initialformData?.table_name || "Table Name"}
                 value={initialformData?.table_name}
@@ -38,7 +38,7 @@ export default function TablesForm({
                 <input 
                 type="number"
                 name="capacity"
-                className="form-control"
+                className="form-control mb-1"
                 id="people"
                 placeholder={initialformData?.capacity || "Table Capacity"}
                 value={initialformData?.capacity}
@@ -48,12 +48,10 @@ export default function TablesForm({
                 />
             </div>
         </fieldset>
-        <div>
-            <button>
+        <div className="d-flex justify-content-left p-2">
+            <button className="mr-2">
                 Submit
             </button>
-        </div>
-        <div>
             <button onClick={handleCancel}> 
                 Cancel 
             </button>
