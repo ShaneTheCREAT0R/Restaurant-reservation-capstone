@@ -46,8 +46,6 @@ function Dashboard({ date }) {
     history.push(`/dashboard?date=${next(date)}`)
   }
 
-  console.log(reservations)
-
   return (
     <main>
       <h1>Dashboard</h1>
@@ -55,13 +53,13 @@ function Dashboard({ date }) {
         <h4 className="mb-0">Reservations for {date}</h4>
       </div>
       <div>
-        <button onClick={handleToday}>
+        <button className="btn btn-primary mr-1" onClick={handleToday}>
          today
         </button>
-        <button onClick={handlePrevious}>
+        <button className="btn btn-primary mr-1" onClick={handlePrevious}>
          previous
         </button>
-        <button onClick={handleNext}>
+        <button className="btn btn-primary mr-1" onClick={handleNext}>
          next
         </button>
         </div>

@@ -49,10 +49,10 @@ export default function TablesForm({
             </div>
         </fieldset>
         <div className="d-flex justify-content-left p-2">
-            <button className="mr-2">
+            <button className="btn btn-primary mr-1">
                 Submit
             </button>
-            <button onClick={handleCancel}> 
+            <button className="btn btn-secondary mr-1" onClick={handleCancel}> 
                 Cancel 
             </button>
         </div>
