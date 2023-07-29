@@ -25,7 +25,7 @@ export default function Form({
                 <input 
                 type="text"
                 name="first_name"
-                className="form-control"
+                className="form-control mb-1"
                 id="first_name"
                 placeholder={initialformData?.first_name || "First Name"}
                 value={initialformData?.first_name}
@@ -37,7 +37,7 @@ export default function Form({
                 <input 
                 type="text"
                 name="last_name"
-                className="form-control"
+                className="form-control mb-1"
                 id="last_name"
                 placeholder={initialformData?.last_name || "Last Name"}
                 value={initialformData?.last_name}
@@ -49,7 +49,7 @@ export default function Form({
                 <input 
                 type="tel"
                 name="mobile_number"
-                className="form-control"
+                className="form-control mb-1"
                 id="mobile_number"
                 placeholder={initialformData?.mobile_number || "Mobile Number"}
                 value={initialformData?.mobile_number}
@@ -61,7 +61,7 @@ export default function Form({
                 <input 
                 type="number"
                 name="people"
-                className="form-control"
+                className="form-control mb-1"
                 id="people"
                 placeholder={initialformData?.people || "Number of People"}
                 value={initialformData?.people}
@@ -74,7 +74,7 @@ export default function Form({
                 <input 
                 type="date"
                 name="reservation_date"
-                className="form-control"
+                className="form-control mb-1"
                 id="reservation_date"
                 placeholder={initialformData?.reservation_date || "YYYY-MM-DD"}
                 value={initialformData?.reservation_date}
@@ -82,7 +82,7 @@ export default function Form({
                 required
                 />
             </div>
-            <div>
+            <div className="d-flex justify-content-center">
                 <input 
                 type="time"
                 name="reservation_time"
@@ -95,14 +95,12 @@ export default function Form({
                 />
             </div>
         </fieldset>
-        <div>
-            <button>
+        <div className="d-flex justify-content-center">
+            <button className="m-2">
                 Submit
             </button>
-        </div>
-        <div>
-            <button onClick={handleCancel}> 
-            Cancel 
+            <button className="m-2" onClick={handleCancel}> 
+                Cancel 
             </button>
         </div>
     </form>
