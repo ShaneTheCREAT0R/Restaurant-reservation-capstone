@@ -91,6 +91,20 @@ function isValidTimeAndDate(req, res, next){
   next()
 }
 
+function mobileNumberIsNumber(req, res, next) {
+  const { mobile_number } = req.body.data;
+  const mobileInt = parseInt(mobile_number)
+  const validNumber = Number.isInteger(mobileInt);
+  if (validNumber) {
+    return next();
+  } else {
+    return next({
+      status: 400, 
+      message: `mobile_number field formatted incorrectly: ${mobile_number} needs to be a number.`,
+    })
+  }
+}
+
 function hasBookedStatus(req, res, next) {
   const { status } = res.locals.reservation
     ? res.locals.reservation
@@ -189,6 +203,7 @@ module.exports = {
   create: [
     asyncErrorBoundary(isValidReservation),
     isValidTimeAndDate,
+    mobileNumberIsNumber,
     hasBookedStatus,
     asyncErrorBoundary(create),
   ],

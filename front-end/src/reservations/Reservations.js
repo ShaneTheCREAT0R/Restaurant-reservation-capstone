@@ -4,6 +4,7 @@ import { createReservation } from '../utils/api';
 import { isNotOnTuesday } from '../utils/date-time';
 import { isInTheFuture } from '../utils/date-time';
 import { isValidTime } from '../utils/date-time';
+import { mobileNumberIsNumber } from '../utils/date-time';
 import ErrorAlert from '../layout/ErrorAlert';
 import Form from './Form';
 
@@ -29,17 +30,18 @@ export default function Reservations() {
           });
     }
 
-    const findErrors = (date, time, errors) => {
+    const findErrors = (date, time, mobile_number, errors) => {
       isNotOnTuesday(date, errors);
       isInTheFuture(date, errors);
       isValidTime(time, errors);
+      mobileNumberIsNumber(mobile_number, errors)
     };
   
     const handleSubmit = async (e) => {
         e.preventDefault();
         const controller = new AbortController();
         const errors = [];
-        findErrors(formData.reservation_date, formData.reservation_time, errors);
+        findErrors(formData.reservation_date, formData.reservation_time, formData.mobile_number, errors);
         if (errors.length){
           setReservationsError({ message: errors });
           return;

@@ -81,6 +81,16 @@ export function next(currentDate) {
   return asDateString(date);
 }
 
+
+//Validation to check if mobile number is number
+export function mobileNumberIsNumber(mobile_number, errors) {
+  const mobileInt = parseInt(mobile_number)
+  const validNumber = Number.isInteger(mobileInt);
+  if (!validNumber) {
+    errors.push(<li key="number">Mobile number field formatted incorrectly: "{mobile_number}" needs to be a number.</li>)
+  }
+}
+
 //Time-based validation for creating and updating reservations
 export function isNotOnTuesday(reservation_date, errors) {
   const [year, month, day] = reservation_date.split("-");
