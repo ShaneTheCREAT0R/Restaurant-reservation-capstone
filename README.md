@@ -1,3 +1,5 @@
+<img width="1354" alt="Screenshot 2023-11-30 at 5 20 03 PM" src="https://github.com/ShaneTheCREAT0R/Restaurant-reservation-capstone/assets/119474023/632d9c1f-12d3-41d6-998a-d90e4e74598d">
+
 # Capstone: Restaurant Reservation System
 
 > You have been hired as a full stack developer at _Periodic Tables_, a startup that is creating a reservation system for fine dining restaurants.
